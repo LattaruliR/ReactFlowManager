@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { useTasks } from "./hooks/useTasks"; // Papel 3
-import { ThemeToggle } from "./components/ThemeToggle"; // Papel 3
+import ThemeToggle from "./components/ThemeToggle"; // Papel 3
 import { Toast } from "./components/Toast"; // Papel 4
 import { TaskForm } from "./components/TaskForm"; // Papel 1
 import { TaskList } from "./components/TaskList"; // Papel 1
