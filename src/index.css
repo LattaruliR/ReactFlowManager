@@ -1,24 +1,389 @@
+/* =========================================================
+   TaskFlow — Liquid Glass (Frutiger Aero, versão moderna)
+   Papel 3 define os tokens; todos os componentes só usam.
+   O tema é controlado por <html data-theme="light|dark">
+   (ThemeContext.jsx faz o setAttribute).
+   ========================================================= */
+
+/* ---------- Tokens: modo claro (padrão) ---------- */
 :root,
 [data-theme="light"] {
-  --bg: #f5f6fa;
-  --surface: #ffffff;
-  --text: #1f2430;
-  --text-muted: #6b7280;
-  --primary: #4f46e5;
-  --border: #e5e7eb;
+  color-scheme: light;
+
+  /* fundo: céu aqua + vegetação + toque lavanda */
+  --bg-base: #dff3ff;
+  --blob-1: #6fd0ff;
+  --blob-2: #86f0c6;
+  --blob-3: #c2b8ff;
+
+  /* texto e marca */
+  --text: #0f2a3d;
+  --text-muted: #4b6b80;
+  --primary: #0a84ff;
+  --primary-hi: #5ec3ff;
+  --primary-contrast: #ffffff;
+  --success: #12b981;
+  --danger: #ff4d6a;
+
+  /* vidro */
+  --glass-bg: rgba(255, 255, 255, 0.34);
+  --glass-bg-strong: rgba(255, 255, 255, 0.62);
+  --glass-border: rgba(255, 255, 255, 0.7);
+  --glass-edge-low: rgba(20, 90, 140, 0.12);
+  --glass-highlight: rgba(255, 255, 255, 0.95);
+  --glass-sheen: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 10px 34px rgba(31, 90, 140, 0.2),
+    0 2px 6px rgba(31, 90, 140, 0.1);
+  --focus-ring: rgba(10, 132, 255, 0.55);
+
+  /* aliases compatíveis com a primeira versão */
+  --bg: var(--bg-base);
+  --surface: var(--glass-bg);
+  --border: var(--glass-border);
 }
 
+/* ---------- Tokens: modo escuro ---------- */
 [data-theme="dark"] {
-  --bg: #12141a;
-  --surface: #1c1f28;
-  --text: #e8eaf0;
-  --text-muted: #9aa1b2;
-  --primary: #818cf8;
-  --border: #2d3140;
+  color-scheme: dark;
+
+  --bg-base: #060b18;
+  --blob-1: #0b5a94;
+  --blob-2: #0d7a6f;
+  --blob-3: #4a32a8;
+
+  --text: #e6f4ff;
+  --text-muted: #8fb0c7;
+  --primary: #3db8ff;
+  --primary-hi: #7fe3ff;
+  --primary-contrast: #04121f;
+  --success: #34e0a1;
+  --danger: #ff6b86;
+
+  --glass-bg: rgba(18, 32, 58, 0.42);
+  --glass-bg-strong: rgba(26, 44, 78, 0.66);
+  --glass-border: rgba(255, 255, 255, 0.16);
+  --glass-edge-low: rgba(0, 0, 0, 0.35);
+  --glass-highlight: rgba(255, 255, 255, 0.28);
+  --glass-sheen: rgba(255, 255, 255, 0.12);
+  --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.35);
+  --focus-ring: rgba(61, 184, 255, 0.6);
+}
+
+/* ---------- Tokens de estrutura (iguais nos dois temas) ---------- */
+:root {
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 26px;
+  --radius-pill: 999px;
+  --blur: blur(22px) saturate(180%);
+  --font: -apple-system, "SF Pro Display", "Segoe UI Variable", "Segoe UI",
+    system-ui, "Helvetica Neue", Arial, sans-serif;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--bg-base);
 }
 
 body {
-  background: var(--bg);
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.5;
   color: var(--text);
-  transition: background 0.2s, color 0.2s;
+  background: transparent;
+  -webkit-font-smoothing: antialiased;
+  transition: color 0.3s var(--ease);
+}
+
+/* o "mundo" atrás do vidro: manchas de cor desfocadas */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(60vmax 60vmax at 12% 8%, var(--blob-1), transparent 60%),
+    radial-gradient(55vmax 55vmax at 92% 18%, var(--blob-3), transparent 62%),
+    radial-gradient(65vmax 65vmax at 70% 100%, var(--blob-2), transparent 60%),
+    var(--bg-base);
+  transition: background 0.4s var(--ease);
+}
+
+#root {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+h1 {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 750;
+}
+h2 {
+  font-size: 1.35rem;
+  font-weight: 650;
+}
+p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ---------- Vidro (a peça central) ---------- */
+.glass,
+.glass-strong {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--blur);
+  backdrop-filter: var(--blur);
+  box-shadow:
+    var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-edge-low);
+  padding: 20px;
+  transition: background 0.3s var(--ease), border-color 0.3s var(--ease),
+    box-shadow 0.3s var(--ease);
+}
+.glass-strong {
+  background: var(--glass-bg-strong);
+}
+
+/* brilho especular da metade de cima (o "gloss" do Aero) */
+.glass::before,
+.glass-strong::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    var(--glass-sheen) 0%,
+    transparent 42%
+  );
+}
+
+/* ---------- Botões ---------- */
+button,
+.btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  font: inherit;
+  font-weight: 600;
+  color: var(--text);
+  padding: 10px 18px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill);
+  background: var(--glass-bg-strong);
+  -webkit-backdrop-filter: var(--blur);
+  backdrop-filter: var(--blur);
+  box-shadow:
+    0 4px 14px rgba(31, 90, 140, 0.18),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-edge-low);
+  cursor: pointer;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease),
+    background 0.2s var(--ease);
+}
+button::before,
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 50% 0;
+  z-index: -1;
+  background: linear-gradient(180deg, var(--glass-sheen), transparent);
+  pointer-events: none;
+}
+button:hover,
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 8px 20px rgba(31, 90, 140, 0.24),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-edge-low);
+}
+button:active,
+.btn:active {
+  transform: translateY(0) scale(0.98);
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* botão de ação principal: gota de água azul */
+.btn-primary,
+button[type="submit"] {
+  color: var(--primary-contrast);
+  border-color: rgba(255, 255, 255, 0.55);
+  background: linear-gradient(180deg, var(--primary-hi), var(--primary));
+  text-shadow: 0 1px 1px rgba(0, 40, 90, 0.25);
+}
+.btn-danger {
+  color: #fff;
+  background: linear-gradient(180deg, #ff93a5, var(--danger));
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- Campos ---------- */
+input[type="text"],
+input[type="search"],
+input:not([type]),
+select,
+textarea {
+  font: inherit;
+  color: var(--text);
+  padding: 11px 16px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--blur);
+  backdrop-filter: var(--blur);
+  box-shadow:
+    inset 0 2px 6px var(--glass-edge-low),
+    inset 0 1px 0 var(--glass-highlight);
+  transition: box-shadow 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--primary);
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+/* ---------- Foco visível (acessibilidade) ---------- */
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ---------- Classes prontas para o grupo ---------- */
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+}
+.task-item.done span,
+.task-item.done .task-title {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary-contrast);
+  background: linear-gradient(180deg, var(--primary-hi), var(--primary));
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  max-width: min(92vw, 420px);
+  padding: 12px 20px;
+  border-radius: var(--radius-pill);
+  z-index: 50;
+}
+
+/* ---------- Fallbacks e preferências do usuário ---------- */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass,
+  .glass-strong,
+  button,
+  .btn,
+  input,
+  select,
+  textarea {
+    background: var(--glass-bg-strong);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root,
+  [data-theme="light"] {
+    --glass-bg: rgba(255, 255, 255, 0.92);
+    --glass-bg-strong: #ffffff;
+  }
+  [data-theme="dark"] {
+    --glass-bg: rgba(20, 34, 60, 0.96);
+    --glass-bg-strong: #1a2c4e;
+  }
+  .glass,
+  .glass-strong,
+  button,
+  .btn,
+  input,
+  select,
+  textarea {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@media (max-width: 520px) {
+  #root {
+    padding: 24px 14px 64px;
+  }
+  .glass,
+  .glass-strong {
+    padding: 16px;
+    border-radius: var(--radius-md);
+  }
 }
