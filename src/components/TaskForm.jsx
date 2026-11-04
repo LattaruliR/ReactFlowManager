@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
 // Formulário para adicionar tarefas.
-// useState  -> input controlado (texto)
-// useRef    -> acesso direto ao <input> para devolver o foco
 export function TaskForm({ adicionar, onAdicionada }) {
   const [texto, setTexto] = useState("");
   const inputRef = useRef(null);
