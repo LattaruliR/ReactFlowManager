@@ -182,3 +182,169 @@
     border-right-color: var(--border);
   }
 }
+
+.app {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0 8px;
+}
+
+.task-form {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.task-form input[type="text"] {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-form button,
+.task-remover {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.filtro {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.filtro button {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 9px 10px;
+  white-space: nowrap;
+}
+
+.filtro button.ativo {
+  color: var(--primary-contrast);
+  background: var(--primary);
+}
+
+.task-list {
+  gap: 8px;
+}
+
+.app .task-item {
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  animation: task-enter 420ms var(--ease) backwards;
+  transition: transform 180ms var(--ease), background 180ms var(--ease),
+    border-color 180ms var(--ease), box-shadow 180ms var(--ease);
+}
+
+.task-list > .task-item:nth-child(2) {
+  animation-delay: 45ms;
+}
+
+.task-list > .task-item:nth-child(3) {
+  animation-delay: 90ms;
+}
+
+.task-list > .task-item:nth-child(4) {
+  animation-delay: 135ms;
+}
+
+.task-list > .task-item:nth-child(5) {
+  animation-delay: 180ms;
+}
+
+@media (hover: hover) {
+  .app .task-item:hover {
+    transform: translateY(-2px);
+    border-color: var(--glass-highlight);
+    background: var(--glass-bg-strong);
+    box-shadow: var(--glass-shadow);
+  }
+}
+
+@keyframes task-enter {
+  from {
+    opacity: 0;
+    transform: translateY(9px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes checkbox-pop {
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.task-item.concluida input[type="checkbox"] {
+  animation: checkbox-pop 260ms var(--ease);
+}
+
+.task-texto {
+  transition: color 220ms var(--ease);
+}
+
+.task-item label {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.task-item input[type="checkbox"] {
+  flex: 0 0 auto;
+}
+
+.task-texto {
+  overflow-wrap: anywhere;
+}
+
+.task-item.concluida .task-texto {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.task-remover {
+  padding: 8px 12px;
+}
+
+.task-vazia {
+  padding: 12px 0;
+}
+
+@media (max-width: 480px) {
+  .app {
+    gap: 12px;
+  }
+
+  .task-form {
+    gap: 8px;
+  }
+
+  .task-form button,
+  .filtro button {
+    padding: 8px 6px;
+  }
+
+  .app .task-item {
+    gap: 8px;
+    padding: 10px;
+  }
+}

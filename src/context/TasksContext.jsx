@@ -17,7 +17,8 @@ export function TasksProvider({ children }) {
     dispatch({
       type: "ADD",
       tarefa: {
-        ...tarefa,
+        id: crypto.randomUUID(),
+        texto: tarefa,
         concluida: false
       }
     });
